@@ -28,8 +28,8 @@ except:
     print 'Cannot find library "requests"!'
     print 'Please do either:'
     print '    sudo apt-get install python-requests'
-    print '    sudo pip requests'
     print '    sudo easy_install requests'
+    print '    sudo pip install requests'
     print '    Go to http://docs.python-requests.org/en/latest/user/install/#get-the-code'
     sys.exit(1)
 
@@ -43,6 +43,7 @@ except:
     print 'Please do either:'
     print '    sudo apt-get install python-pygments'
     print '    sudo easy_install Pygments'
+    print '    sudo pip install pygments'
     print '    Go to http://pygments.org/docs/installation/'
     sys.exit(1)
 
