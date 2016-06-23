@@ -5,31 +5,36 @@ Find the full WonderPush services documentation at:
 http://www.wonderpush.com/docs/.
 
 
+
 Introduction
 ------------
 
 This project contains Python libraries for interacting with the WonderPush services.
-It helps you performing calls to the REST APIs. This contrasts with the SDKs, which are targetted at being integrated within your apps and handle interactions with the users.
+It helps you performing calls to the APIs. This contrasts with the SDKs, which are targetted at being integrated within your apps and handle interactions with the users.
 
 
-### REST APIs
+### APIs
 
-WonderPush comes as two REST APIs, one aimed at the user devices, and the other optional one aimed at your servers and tools.
-The former is simply called the API, whereas the latter is called the Management API.
+WonderPush comes as two APIs, one aimed at the user devices, and the other optional one aimed at your servers and tools.
+The former is simply called the REST API, whereas the latter is called the Management API.
+
+This tool helps you performing calls to both.
+
+#### Management API Reference
+
+All references for the WonderPush Management API are available on the WonderPush documentation pages:
+https://wonderpush-management-api.readme.io/v1/docs.
 
 #### API Reference
 
 All references for the WonderPush API are available on the WonderPush documentation pages:
 http://www.wonderpush.com/docs/reference/api/v1.
 
-#### Management API Reference
-
-All references for the WonderPush Management API are available on the WonderPush documentation pages:
-http://www.wonderpush.com/docs/reference/management-api/v1.
 
 
 Command-line tool
 -----------------
+
 
 ### Dependencies
 
@@ -144,31 +149,37 @@ Available styles are:
   - native
 ```
 
+
 ### Generalities
 
-Every call needs both an access token and a client secret,
+Every call to the Management API needs the application access token, given using the `-a`/`--access-token`.
+You can find it in your dashboard under the _Settings / Configuration_ page, on the _Management API_ tab.
+
+Every call to the REST API needs both an access token and a client secret,
 given using the `-a`/`--access-token` and `-s`/`--client-secret` arguments respectively.
 
-The only exception to this is the call to get a client access token,
+The only exception to the above is the call to get a client access token,
 which needs both the client id and client secret of your application,
 given using the `-c`/`--client-id` and `-s`/`--client-secret` arguments respectively.
 
-Specifying an access token a client id when it is not required by the REST end-point you're calling
+Specifying an access token or a client id when it is not required by the REST end-point you're calling
 merely adds it as an extraneous argument.
 Although harmless, this should be avoided.
 
-The client secret is required to calculate the signature of the request,
+The client secret is required to calculate the signature of requests to the REST API,
 whereas the client id identifies the application for which an access token is to be created,
 and the access token in itself is attached to your application already.
 
-### Access tokens
 
-The [REST API ](http://www.wonderpush.com/docs/reference/api/v1) requires `installation` access tokens,
-you can create one by calling the `POST /v1/authentication/accessTokens deviceId=YOUR_DEVICE_ID devicePlatform=PLATFORM_HANDLED_BY_YOUR_APP` end-point.
+### Access tokens
 
 The [Management REST API](http://www.wonderpush.com/docs/reference/management-api/v1) requires either `staff` or `application` access tokens.
 You can find them under your profile or your application's profile respectively.
 The `staff` access token is subject to the rights you have been granted, whereas the `application` access token holds all rights.
+
+The [REST API ](http://www.wonderpush.com/docs/reference/api/v1) requires `installation` access tokens,
+you can create one by calling the `POST /v1/authentication/accessTokens deviceId=YOUR_DEVICE_ID devicePlatform=PLATFORM_HANDLED_BY_YOUR_APP` end-point.
+
 
 ### Configuration
 
@@ -185,7 +196,7 @@ Here is a good start for your `~/.wonderpush/rest.conf`:
     },
 
     "my_app": {
-      "arguments": [ "-c", "YOUR_CLIENT_ID", "-s", "YOUR_CLIENT_SECRET" ]
+      "arguments": [ "-a", "YOUR_APPLICATION_ACCESS_TOKEN" ]
     },
 
     "my_test_device": {
@@ -196,9 +207,25 @@ Here is a good start for your `~/.wonderpush/rest.conf`:
 ```
 
 You can get your application client id and client secret [in your dashboard](https://dashboard.wonderpush.com/),
-under _Settings / Keys_ in the left menu, listed in the block entitled _Application credentials_.
+under _Settings / Configuration_ in the left menu, listed in the block entitled _Application credentials_.
 
-### Create your first installation access token
+
+### [Management API] Send your first notification
+
+Simply call:
+```shell
+./rest.py -a YOUR_APPLICATION_ACCESS_TOKEN POST /v1/management/deliveries targetSegmentIds=@ALL notification='{"alert":{"text":"Hello, API!"}}'
+```
+
+You should get an answer like this one:
+```json
+{"success":true}
+```
+
+And all your installations will receive a notification.
+
+
+### [REST API] Create your first installation access token
 
 Simply call:
 ```shell
