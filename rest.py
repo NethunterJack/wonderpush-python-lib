@@ -38,6 +38,7 @@ try:
     import pygments.lexer
     import pygments.lexers
     import pygments.formatters
+    import pygments.styles
 except:
     print 'Cannot find library "Pygments"!'
     print 'Please do either:'
