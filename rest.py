@@ -304,6 +304,8 @@ def query(argv = None, **kwargs):
     request = requests.Request(method=args.method, url=args.url, headers=args.headers, params=args.params)
     request = request.prepare()
     args.logger.info(formatRequest(args, request))
+    if args.ssl_verify is False:
+        requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
     response = requests.Session().send(request, verify=args.ssl_verify)
     http, body = formatResponse(args, response)
     args.logger.info('%s', http)
